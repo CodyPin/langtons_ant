@@ -8,6 +8,7 @@ res = 10
 width = 1280
 height = 1280
 FPS = 24
+font_size = 24
 
 
 def make2DArray(c, r):
@@ -53,6 +54,10 @@ if __name__ == '__main__':
     ant_y = random.randint(0, rows)
     ant_dir = random.randint(0, 3)
 
+    steps = 0
+    font = pygame.font.Font(None, 24)
+
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -61,13 +66,13 @@ if __name__ == '__main__':
         screen.fill("black")
 
         # Out of bound handling
-        if ant_x < 0:
+        if ant_x <= 0:
             ant_x = cols
-        if ant_x > cols:
+        if ant_x >= cols:
             ant_x = 0
-        if ant_y < 0:
+        if ant_y <= 0:
             ant_y = rows
-        if ant_y > rows:
+        if ant_y >= rows:
             ant_y = 0
 
         for i in range(cols):
@@ -95,8 +100,11 @@ if __name__ == '__main__':
             grid[ant_x][ant_y] = 0
             ant_x, ant_y = move_forward(ant_x, ant_y, ant_dir)
 
-
-        # flip() the display to put your work on screen
+        steps += 1
+        text = font.render(f"Steps: {steps}", True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.topright = (width - 10, 10)
+        screen.blit(text, text_rect)
         pygame.display.flip()
 
         clock.tick(FPS)  # limits FPS
